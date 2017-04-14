@@ -1,7 +1,7 @@
 // Send More Money Problem
 // Genetic Algorithms Approach
 // Author: Guilherme Martini
-// Date: 13 April 2017
+// Date: 14 April 2017
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -164,15 +164,22 @@ void printPopulation(int **population) {
 
 int **cyclicCrossover(int **population) {
 	time_t t;
-	int i, j, randInt, temp;
+	int i, j, randInt, randIndex, temp;
 
 	srand((unsigned)time(&t));
 
 	for(i=100; i<180; i+=2) {
-		randInt = rand()%10;
-		
-		if(population[i+1][randInt] != randInt) {
-			temp = population[i+1][randInt];
+		randIndex = rand()%10;
+		randInt = population[i][randIndex];	
+	
+		while(population[i+1][randIndex] != randInt) {	
+			temp = population[i+1][randIndex];
+			population[i][randIndex] = population[i+1][randIndex];
+			for(j=0; j<10; j++) {
+				if(j != randIndex && population[i][j] == temp) {
+					randIndex = j;
+				}
+			}
 		}
 	}
 
