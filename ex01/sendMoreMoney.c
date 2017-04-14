@@ -19,6 +19,7 @@ int **generateIndividuals(int **population);
 int **evaluatePopulation(int **population);
 int **tournament(int **population, int tour);
 int **cyclicCrossover(int **population);
+int **evaluateChildren(int **population);
 
 void maxMinEval(int **population);
 void mean(int **population);
@@ -50,11 +51,11 @@ int main(int argc, char *argv[]) {
 	mean(population);
 	// Tournament
 	population = tournament(population, 3);
-	// Print population
-	//printPopulation(population);
-	
 	// Make cyclic crossover and generate children
 	population = cyclicCrossover(population);
+	// Avaliate children
+	population = evaluateChildren(population);
+	printPopulation(population);
 
 	return 0;
 }
@@ -86,6 +87,21 @@ int **evaluatePopulation(int **population) {
 	int i, send, more, money;
 
 	for(i=0; i<PSIZE; i++) {
+		send = more = money = 0;
+		send = population[i][0]*1000+population[i][1]*100+population[i][2]*10+population[i][3];
+		more = population[i][4]*1000+population[i][5]*100+population[i][6]*10+population[i][1];
+		money = population[i][4]*10000+population[i][5]*1000+population[i][2]*100+population[i][1]*10+population[i][7];
+		// Set evaluation value for the i'th individual
+		population[i][ISIZE] = abs((send + more) - money);
+	}
+
+	return population;
+}
+
+int **evaluateChildren(int **population) {
+	int i, send, more, money;
+
+	for(i=100; i<180; i++) {
 		send = more = money = 0;
 		send = population[i][0]*1000+population[i][1]*100+population[i][2]*10+population[i][3];
 		more = population[i][4]*1000+population[i][5]*100+population[i][6]*10+population[i][1];
@@ -174,10 +190,12 @@ int **cyclicCrossover(int **population) {
 	
 		while(population[i+1][randIndex] != randInt) {	
 			temp = population[i+1][randIndex];
-			population[i][randIndex] = population[i+1][randIndex];
+			population[i+1][randIndex] = population[i][randIndex];
+			population[i][randIndex] = temp;
 			for(j=0; j<10; j++) {
 				if(j != randIndex && population[i][j] == temp) {
 					randIndex = j;
+					randInt = population[i+1][j];
 				}
 			}
 		}
