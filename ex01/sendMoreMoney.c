@@ -19,7 +19,9 @@ int **generateIndividuals(int **population);
 int **evaluatePopulation(int **population);
 int **tournament(int **population, int tour);
 int **cyclicCrossover(int **population);
-int **evaluateChildren(int **population);
+int **mutation(int **population);
+int **sortPopulation(int **population);
+int sucess(int **population);
 
 void maxMinEval(int **population);
 void mean(int **population);
@@ -28,13 +30,14 @@ void printPopulation(int **population);
 
 int main(int argc, char *argv[]) {
 	int **population, i, j;
-	int nrows, ncolumns;
+	int nrows, ncolumns, sucessCount;
 
 	// Total size of population plus space for children
 	nrows = PSIZE + PSIZE*PCROSS;
 	// 8 for individual, 2 for permutation, 1 for fitness score
 	ncolumns = ISIZE + 1;
 
+	/*
 	// Allocate matrix for population
 	// Each row from index 0 to 7 corresponds to "sendmory"
 	population = (int**) malloc(nrows * sizeof(int*));
@@ -45,21 +48,51 @@ int main(int argc, char *argv[]) {
 	population = generateIndividuals(population);
 	// Evaluate each individual
 	population = evaluatePopulation(population);
+	*/
+	
+	sucessCount = 0;
+
+	for(j=0; j<1000; j++) {
+		// Allocate matrix for population
+		// Each row from index 0 to 7 corresponds to "sendmory"
+		population = (int**) malloc(nrows * sizeof(int*));
+		for(i=0; i < nrows; i++)
+			population[i] = (int*) malloc(ncolumns * sizeof(int));
+
+		// Generate random population
+		population = generateIndividuals(population);
+		// Evaluate each individual
+		population = evaluatePopulation(population);
+
+		for(i=0; i<200; i++) {
+			// Tournament
+			population = tournament(population, 3);
+			// Make cyclic crossover and generate children
+			population = cyclicCrossover(population);
+			// Make mutations
+			population = mutation(population);
+			// Avaliate children
+			population = evaluatePopulation(population);
+			population = sortPopulation(population);
+		}
+		sucessCount += sucess(population);
+	}
+
+	printPopulation(population);
 	// Print max and min evaluation values
 	maxMinEval(population);	
 	// Calculate and print the mean of evals
 	mean(population);
-	// Tournament
-	population = tournament(population, 3);
-	// Make cyclic crossover and generate children
-	population = cyclicCrossover(population);
-	// Avaliate children
-	population = evaluateChildren(population);
-	printPopulation(population);
+	printf("Percent of sucess in 1000 experiments: %d \n", 1000/sucessCount);
 
 	return 0;
 }
 
+int sucess(int **population) {
+	for(int i=0; i<180; i++)
+		if(population[i][10] == 0) return 1;
+	return 0;
+}
 
 int **generateIndividuals(int **population) {
 	time_t t;
@@ -86,22 +119,7 @@ int **generateIndividuals(int **population) {
 int **evaluatePopulation(int **population) {
 	int i, send, more, money;
 
-	for(i=0; i<PSIZE; i++) {
-		send = more = money = 0;
-		send = population[i][0]*1000+population[i][1]*100+population[i][2]*10+population[i][3];
-		more = population[i][4]*1000+population[i][5]*100+population[i][6]*10+population[i][1];
-		money = population[i][4]*10000+population[i][5]*1000+population[i][2]*100+population[i][1]*10+population[i][7];
-		// Set evaluation value for the i'th individual
-		population[i][ISIZE] = abs((send + more) - money);
-	}
-
-	return population;
-}
-
-int **evaluateChildren(int **population) {
-	int i, send, more, money;
-
-	for(i=100; i<180; i++) {
+	for(i=0; i<180; i++) {
 		send = more = money = 0;
 		send = population[i][0]*1000+population[i][1]*100+population[i][2]*10+population[i][3];
 		more = population[i][4]*1000+population[i][5]*100+population[i][6]*10+population[i][1];
@@ -150,7 +168,7 @@ int **tournament(int **population, int tour) {
 
 	for(i=100; i<180; i++) {
 		best = 1000000;
-		// Make one tornament based on tour
+		// Make one tournament based on tour
 		for(j=0; j<tour; j++) {
 			randInt = rand() % PSIZE;
 			if(population[randInt][ISIZE] < best) {
@@ -185,9 +203,11 @@ int **cyclicCrossover(int **population) {
 	srand((unsigned)time(&t));
 
 	for(i=100; i<180; i+=2) {
+		// Select crossover point and get value
 		randIndex = rand()%10;
 		randInt = population[i][randIndex];	
 	
+		// Make a cyclic crossover
 		while(population[i+1][randIndex] != randInt) {	
 			temp = population[i+1][randIndex];
 			population[i+1][randIndex] = population[i][randIndex];
@@ -201,5 +221,51 @@ int **cyclicCrossover(int **population) {
 		}
 	}
 
+	return population;
+}
+
+int **mutation(int **population) {
+	time_t t;
+	int i, randRow, randColumn, temp;
+
+	srand((unsigned)time(&t));
+
+	// Select 10% of generated children	
+	for(i=0; i<8; i++) {
+		// Select row to mutate
+		randRow = (rand() % 80) + 100;
+		// Select gene to mutate
+		randColumn = rand() % 7;
+		// Swap genes
+		temp = population[randRow][9];
+		population[randRow][9] = population[randRow][randColumn];
+		population[randRow][randColumn] = temp;
+	}
+
+	return population;
+}
+
+int **sortPopulation(int **population) {
+	int i, j;
+	int *temp;
+	
+	// Temp vector to swap rows of matrix
+	temp = (int*) malloc(sizeof(int)*11);
+	
+	// Insertion sort	
+	for(i=1; i < 180; i++) {
+		j = i;
+		while(j>0 && population[j][10] < population[j-1][10]) {
+			//temp = population[j];
+			//population[j] = population[j-1];
+			//population[j-1] = temp;
+			memcpy(temp, population[j], sizeof(int)*11);
+			memcpy(population[j], population[j-1], sizeof(int)*11);
+			memcpy(population[j-1], temp, sizeof(int)*11);
+			j--;
+		}
+	}	
+			
+	free(temp);	
 	return population;
 }
