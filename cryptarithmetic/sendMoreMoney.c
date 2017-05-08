@@ -31,27 +31,28 @@ int main(int argc, char *argv[]) {
 	// Allocate matrix for population
 	// Each row from index 0 to 7 corresponds to "sendmory"
 	population = (int**) malloc(180 * sizeof(int*));
-	for(i=0; i < 180; i++)
+	for(i=0; i < 180; i++) {
 		population[i] = (int*) malloc(11 * sizeof(int));
+	}
 
 	// 1000 experiments
 	for(j=0; j<1; j++) {
 		// Generate random population
 		population = generateIndividuals(population);
 		population = evaluatePopulation(population);
+		printPopulation(population);
 
 		// 200 generations
 		for(i=0; i<1; i++) {
+			if(sucess(population)) {
+				sucessCount += 1;
+				printPopulation(population);
+			}
 			population = tournament(population, 3);
 			population = cyclicCrossover(population);
 			population = mutation(population);
 			population = evaluatePopulation(population);
 			population = sortPopulation(population);
-			printPopulation(population);
-		}
-
-		if(sucess(population)) {
-			sucessCount += 1;
 			printPopulation(population);
 		}
 	}
@@ -144,9 +145,8 @@ void mean(int **population) {
 // Copy selected fathers to positions 101 to 180
 int **tournament(int **population, int tour) {
 	time_t t;
-	int i,j , bestIndex, randInt;
-	int best; 
-	//int temp;
+	int i, j, bestIndex, randInt;
+	int best, temp; 
 
 	srand((unsigned)time(&t));
 
@@ -161,8 +161,12 @@ int **tournament(int **population, int tour) {
 			}
 		}
 		// Copy winner to i'th row of population
-		for(j=0; j<11; j++)
+		for(j=0; j<11; j++) {
+			temp = population[i][j];
 			population[i][j] = population[bestIndex][j];
+			population[bestIndex][j] = temp;
+		}
+			
 	}
 
 	return population;
