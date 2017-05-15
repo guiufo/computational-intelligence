@@ -1,5 +1,3 @@
-using StatsBase
-
 #=
 Program to solve the "send + more = money" problem
 Each individual is a row in a 180 x 11 matrix
@@ -8,6 +6,8 @@ The individual is the positions from 1 to 8
 The order of the row is "sendmoryXY"
 XY holds digits to facilitate crossover and mutation
 =#
+using StatsBase
+include("MyModule.jl")
 
 "Evaluate all individuals"
 function evaluate(m)
@@ -28,6 +28,32 @@ function randomPopulation(m)
 	end
 	return m
 end
+
+"Make a roulette and select 80 individuals"
+function roulette(m)
+	fitnessSum = sum(m[1:100,end])
+	pSum = 0.0
+	rouletteValues = zeros(Float64,100)
+	# mount the roulette
+	for i in 1:100
+		rouletteValues[i] = pSum + (m[i,end]/fitnessSum)
+		pSum += rouletteValues[i]
+	end
+
+	for i in 101:180
+		spin = rand()*pSum
+		selected = 1
+		for j in 1:99
+			if spin > rouletteValues[j] && spin <= rouletteValues[j+1]
+				selected = j
+				break
+			end
+		end
+		m[i,:] = m[selected,:]
+	end
+	return m
+end
+
 
 "Makes a tournament with tour of 3"
 function tournament(m)
@@ -90,6 +116,7 @@ function run(nexperiments, ngenerations)
 
 		for j in 1:ngenerations
 			m = tournament(m)
+			#m = roulette(m)
 			m = cyclicCrossover(m)
 			m = mutation(m)
 			m = evaluate(m)

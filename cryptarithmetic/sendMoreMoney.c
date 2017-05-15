@@ -11,13 +11,11 @@
 
 int **generateIndividuals(int **population);
 int **evaluatePopulation(int **population);
+int **evaluateChildren(int **population);
 int **tournament(int **population, int tour);
 int **cyclicCrossover(int **population);
 int **mutation(int **population);
 int **sortPopulation(int **population);
-
-int sucess(int **population);
-
 void maxMinEval(int **population);
 void mean(int **population);
 void printPopulation(int **population);
@@ -31,7 +29,7 @@ int main(int argc, char *argv[]) {
 	// Allocate matrix for population
 	// Each row from index 0 to 7 corresponds to "sendmory"
 	population = (int**) malloc(180 * sizeof(int*));
-	for(i=0; i < 180; i++) {
+	for(i=0; i < 1; i++) {
 		population[i] = (int*) malloc(11 * sizeof(int));
 	}
 
@@ -40,18 +38,18 @@ int main(int argc, char *argv[]) {
 		// Generate random population
 		population = generateIndividuals(population);
 		population = evaluatePopulation(population);
-		printPopulation(population);
+		// printPopulation(population);
 
 		// 200 generations
 		for(i=0; i<1; i++) {
-			if(sucess(population)) {
+			if(population[j][10] == 0) {
 				sucessCount += 1;
-				printPopulation(population);
+				//printPopulation(population);
 			}
 			population = tournament(population, 3);
 			population = cyclicCrossover(population);
 			population = mutation(population);
-			population = evaluatePopulation(population);
+			population = evaluateChildren(population);
 			population = sortPopulation(population);
 			printPopulation(population);
 		}
@@ -60,13 +58,6 @@ int main(int argc, char *argv[]) {
 	free(population);
 	printf("Sucess count: %d \n", sucessCount);
 
-	return 0;
-}
-
-
-int sucess(int **population) {
-	for(int i=0; i<100; i++)
-		if(population[i][10] == 0) return 1;
 	return 0;
 }
 
@@ -95,14 +86,31 @@ int **generateIndividuals(int **population) {
 		}
 	}
 
+	for(i=100; i<180; i++)
+		population[i][10] = 100000;
+
 	return population;
 }
 
+int **evaluateChildren(int **population) {
+	int i, send, more, money;
+
+	for(i=100; i<180; i++) {
+		send = more = money = 0;
+		send = population[i][0]*1000+population[i][1]*100+population[i][2]*10+population[i][3];
+		more = population[i][4]*1000+population[i][5]*100+population[i][6]*10+population[i][1];
+		money = population[i][4]*10000+population[i][5]*1000+population[i][2]*100+population[i][1]*10+population[i][7];
+		// Set evaluation value for the i'th individual
+		population[i][10] = abs((send + more) - money);
+	}
+
+	return population;
+}
 
 int **evaluatePopulation(int **population) {
 	int i, send, more, money;
 
-	for(i=0; i<180; i++) {
+	for(i=0; i<100; i++) {
 		send = more = money = 0;
 		send = population[i][0]*1000+population[i][1]*100+population[i][2]*10+population[i][3];
 		more = population[i][4]*1000+population[i][5]*100+population[i][6]*10+population[i][1];
@@ -188,34 +196,26 @@ void printPopulation(int **population) {
 int **cyclicCrossover(int **population) {
 	time_t t;
 	int i, j, temp;
-	int randIndex, nextValue, initialValue;
-	int indexes[10] = {0};
+	int tempIndex, initialValue, nextValue;
 
 	srand((unsigned)time(&t));
 
 	for(i=100; i<179; i+=2) {
-		randIndex = rand()%10;
-		indexes[randIndex] = 1;
-		initialValue = population[i][randIndex];
+		tempIndex = rand()%10;
+		initialValue = population[i][tempIndex];
 
-		while(population[i+1][randIndex] != initialValue) {
-			nextValue = population[i+1][randIndex];
-
+		while(population[i+1][tempIndex] != initialValue) {
+			nextValue = population[i+1][tempIndex];
 			for(j=0;j<10;j++) { 
-				if(population[i][j] == nextValue) {
-					randIndex = j;
-					indexes[randIndex] = 1;
+				if(j != tempIndex && population[i][j] == nextValue) {
+					tempIndex = j;
+					break;
 				}
 			}
 		}
-
-		for(j=0;j<10;j++) {
-			if(indexes[j]) {
-				temp = population[i][j];
-				population[i][j] = population[i+1][j];
-				population[i+1][j] = temp;
-			}
-		}
+		temp = population[i+1][tempIndex];
+		population[i+1][tempIndex] = population[i][tempIndex];
+		population[i][tempIndex] = temp;
 	}
 
 	return population;
