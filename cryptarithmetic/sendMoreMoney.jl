@@ -9,21 +9,44 @@ XY holds digits to facilitate crossover and mutation
 using StatsBase
 include("MyModule.jl")
 
-"Evaluate all individuals"
-function evaluate(m)
-	for i in 1:180
+"Evaluate individuals"
+function evaluate(problem, m)
+	a, b, c = split(problem, r"\+|\=")
+	x = *(a,b,c)
+	y = ""
+
+	for i in 1:size(x)
+		if !contains(y,x[i:i])
+			y = *(y,x[i:i])
+		end
+	end
+
+	for i in 1:MSIZE
 		send = more = money = 0
 		send = m[i,1]*1000+m[i,2]*100+m[i,3]*10+m[i,4]
 		more = m[i,5]*1000+m[i,6]*100+m[i,7]*10+m[i,2]
 		money = m[i,5]*10000+m[i,6]*1000+m[i,3]*100+m[i,2]*10+m[i,8]
 		m[i,end] = abs(send + more - money)
 	end
+
 	return m
 end
 
-"Generate 100 individuals with size 10"
-function randomPopulation(m)
-	for i in 1:100
+function initPopulation(populationSize, problem, m)
+	a, b, c = split(problem, r"\+|\=")
+	x = *(a,b,c)
+	y = ""
+
+	for i in 1:size(x)
+		if !contains(y,x[i:i])
+			y = *(y,x[i:i])
+		end
+	end
+end
+		
+
+function randomMatrix(m)
+	for i in 1:size(m,2)
 		m[i,1:end-1] = sample(0:9, 10, replace=false)
 	end
 	return m
@@ -55,13 +78,12 @@ function roulette(m)
 end
 
 
-"Makes a tournament with tour of 3"
 function tournament(m)
-	for i in 101:180
-		best = 100000
+	for i in POPSIZE+1:MSIZE
+		best = BIGNUMBER
 		bestIndex = 1 
-		for j in 1:3
-			randInt = rand(1:100)
+		for j in 1:TOUR
+			randInt = rand(1:POPSIZE)
 			if m[randInt,end] < best
 				best = m[randInt,end]
 				bestIndex = randInt
@@ -74,7 +96,7 @@ end
 
 "Makes a cyclic crossover in selected fathers"
 function cyclicCrossover(m)
-	for i in 101:179
+	for i in POPSIZE+1:POPSIZE-1
 		tempIndex = rand(1:10)
 		initialValue = m[i,tempIndex]
 		while m[i+1,tempIndex] != initialValue
@@ -95,28 +117,31 @@ function cyclicCrossover(m)
 	return m
 end
 
-"Mutates 10% of the generated children"
 function mutation(m)
-	for i in 1:8
-		randRow = rand(101:180)
-		randColumn = rand(1:8)
-		randXY = rand(9:10)
+	for i in POPSIZE:size(m,1)
+		randRow = rand(POPSIZE:MSIZE)
+		randColumn = rand(1:PROBLEMSIZE)
+		randXY = rand(1:10)
 		m[randRow,randColumn],m[randRow,randXY] = m[randRow,randXY],m[randRow,randColumn] 
 	end
 	return m
 end
 
-"Usage: run(<number of experiments>, <generations per experiments>)"
-function run(nexperiments, ngenerations)
+function run1()
+	run(100, 100, 200, 80, 10)
+end
+
+function run(NEXPERIMENTS, POPSIZE, NGENERATIONS, CROSS, MUTATION)
+	MSIZE = POPSIZE + POPSIZE * CROSS
+	TOUR = 3
 	counter = 0
-	for i in 1:nexperiments
-		m = zeros(Int32,180,11)
+	for i in 1:NEXPERIMENTS
+		m = zeros(Int32,MSIZE,11)
 		m = randomPopulation(m)
 		m = evaluate(m)
 
-		for j in 1:ngenerations
+		for j in 1:NGENERATIONS
 			m = tournament(m)
-			#m = roulette(m)
 			m = cyclicCrossover(m)
 			m = mutation(m)
 			m = evaluate(m)
@@ -128,7 +153,8 @@ function run(nexperiments, ngenerations)
 		end
 
 	end
-	@printf("%s experiments and %s generations:\n", nexperiments, ngenerations)
-	@printf("%2.1f%% of sucess\n", (counter/nexperiments)*100)
+	@printf("%s experiments and %s generations:\n", NEXPERIMENTS, NGENERATIONS)
+	@printf("%2.1f%% of sucess\n", (counter/NEXPERIMENTS)*100)
 	return
 end
+=#
