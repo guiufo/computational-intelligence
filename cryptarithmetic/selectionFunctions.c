@@ -29,7 +29,7 @@ Population* tournament(Population *population, int tourSize, float cross) {
 		}
 		// Copy winner to i'th row of temp population
 		for(j=0; j<11; j++) {
-			crossPopulation->individuals[j] = population->individuals[bestIndex];
+			crossPopulation->individuals[i].dna[j] = population->individuals[bestIndex].dna[j];
 		}
 	}
   // Return the winners population with elitism

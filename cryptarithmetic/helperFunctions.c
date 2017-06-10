@@ -46,8 +46,30 @@ Population* sortPopulation(Population *population) {
 	return population;
 }
 
-// Print population
+// Print population functions
 void showPopulation(Population *population) {
+  int i, j;
+  printf("\n");
+  for(i = 0; i < 5; i++){
+    for(j = 0; j < 10; j++) {
+      printf("%d ", population->individuals[i].dna[j]);
+    }
+    printf(" %d\n", population->individuals[i].fitness);
+  }
+  printf("\n");
+  printf("    .    .    .\n");
+  printf("    .    .    .\n");
+  printf("    .    .    .\n");
+  printf("\n");
+  for(i = population->psize-5; i < population->psize; i++){
+    for(j = 0; j < 10; j++) {
+      printf("%d ", population->individuals[i].dna[j]);
+    }
+    printf(" %d\n", population->individuals[i].fitness);
+  }
+}
+
+void showFullPopulation(Population *population) {
   int i, j;
   printf("\n");
   for(i = 0; i < population->psize; i++){
