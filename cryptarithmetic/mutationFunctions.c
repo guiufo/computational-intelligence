@@ -1,20 +1,22 @@
-#include "functions.h"
+#include "types.h"
 
-Population* mutate(Population *population, int rate);
-
-Population* mutate(Population *population, int rate) {
+Population* mutate(Population *population, float mutation, float cross) {
   time_t t;
-  int i, randColumnA, randColumnB, temp;
-
   srand((unsigned)time(&t));
+  int i, randColumnA, randColumnB, temp;
+  int psize = population->psize;
+  float randFloat;
 
-  for(i=0; i < population->populationSize; i++) {
-    if(rand()%100 <= rate) {
+  // Mutate children of selected fathers
+  for(i=(int)psize-psize*cross; i<psize; i++) {
+    randFloat = (double)rand()/(double)RAND_MAX;
+    if(randFloat <= mutation) {
       randColumnA = rand() % 10;
       randColumnB = rand() % 10;
-      temp = population->individuals[i].pvector[randColumnA];
-      population->individuals[i].pvector[randColumnA] = population->individuals[i].pvector[randColumnB];
-      population->individuals[i].pvector[randColumnB] = temp;
+      // Swap two values in dna
+      temp = population->individuals[i].dna[randColumnA];
+      population->individuals[i].dna[randColumnA] = population->individuals[i].dna[randColumnB];
+      population->individuals[i].dna[randColumnB] = temp;
     }
   }
 

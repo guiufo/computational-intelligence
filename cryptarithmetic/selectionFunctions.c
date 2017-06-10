@@ -1,31 +1,37 @@
-#include "functions.h"
+#include "types.h"
 
-Population* tournament(Population *population, int tourSize, int cross) {
+// Receives a sorted population to maintain elitism
+Population* tournament(Population *population, int tourSize, float cross) {
   time_t t;
-	int i, j, best, bestIndex, randInt;
-  Population *tempPopulation;
-
-  tempPopulation = (Population *) malloc(sizeof(Population));
-  *tempPopulation = *population;
-
 	srand((unsigned)time(&t));
+	int i, j, best, bestIndex, randInt;
+  int psize = population->psize;
+  Population *crossPopulation;
+  // Get number of bytes allocated by population
+  int prealsize =  psize*sizeof(Individual)+sizeof(int);
 
-	for(i=0; i< cross; i++) {
-		best = 1000000000;
+  // Create hard copy of population
+  crossPopulation = (Population *) malloc(sizeof(Population));
+  crossPopulation->individuals = malloc(psize*sizeof(Individual));
+  memcpy(crossPopulation, population, prealsize);
+
+  // Makes a tournament and copy after remaining best individuals
+	for(i=(int)psize-cross*psize; i<psize; i++) {
+		best = BIGINT;
 		// Make one tournament based on tour
 		for(j=0; j<tourSize; j++) {
-			randInt = rand() % population->populationSize;
-			if(population->individuals[randInt].evaluation < best) {
-				best = population->individuals[randInt].evaluation;
+      // Select random individual
+			randInt = rand() % psize;
+			if(population->individuals[randInt].fitness < best) {
+				best = population->individuals[randInt].fitness;
 				bestIndex = randInt;
 			}
 		}
 		// Copy winner to i'th row of temp population
 		for(j=0; j<11; j++) {
-			tempPopulation->individuals[j] = population->individuals[bestIndex];
+			crossPopulation->individuals[j] = population->individuals[bestIndex];
 		}
-
 	}
-
-	return tempPopulation;
+  // Return the winners population with elitism
+	return crossPopulation;
 }

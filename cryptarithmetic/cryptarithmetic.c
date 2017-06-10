@@ -1,40 +1,48 @@
-#include "functions.c"
+#include "helperFunctions.c"
 #include "evaluationFunctions.c"
 #include "selectionFunctions.c"
 #include "crossoverFunctions.c"
 #include "mutationFunctions.c"
 
-void makeExperiment(int nexperiments, int ngenerations, int popsize, int tour, int cross, int mutation) {
-  Population *population;
-  Population *children;
-  population = (Population*) malloc(sizeof(Population));
-  children = (Population*) malloc(sizeof(Population));
-  int found = 0;
+/*--------------- Functions Signatures and Types -----------------
+Population* initPopulation(Population *population, int psize );
+Population* sortPopulation(Population *population);
+void showPopulation(Population *population);
+Population* tournament(Population *population, int tourSize, float cross);
+Population* cyclicCrossover(Population *population, float cross);
+Population* mutate(Population *population, float mutation);
 
-  for(int i=0; i<nexperiments; i++) {
-    population = initPopulation(population, popsize);
+typedef struct individual {
+	// permutation vector
+  int dna[10];
+	int fitness;
+}Individual;
+
+typedef struct population {
+	Individual *individuals;
+	int psize;
+}Population;
+*/
+
+void makeExperiment(int popsize, int generations, float cross, int tour) {
+  // Init random population and evaluate individuals
+  Population *population;
+  population = (Population*) malloc(sizeof(Population));
+  population = initPopulation(population, popsize);
+  population = evaluateSendPopulation(population);
+
+  // Run n generations
+  for(int i = 0; i < generations; i++) {
+    population = tournament(population, tour, cross);
+    population = cyclicCrossover(population, cross);
     population = evaluateSendPopulation(population);
     population = sortPopulation(population);
-
-    for(int j=0; j<ngenerations; j++) {
-      if (population->individuals[j].evaluation == 0 && found == 0) {
-          found = 1;
-          for(int k=0; k<10; k++) {
-            printf("%d ", population->individuals[j].pvector[k]);
-          }
-          printf("\n");
-      }
-      population = tournament(population, 3, 80);
-      population = cyclicCrossover(population, 80);
-      population = mutate(population, 20);
-      population = evaluateSendPopulation(population);
-      population = sortPopulation(population);
-    }
+    showPopulation(population);
   }
 }
 
 int main() {
-  makeExperiment(10, 200, 100, 3, 80, 20);
+  makeExperiment(20, 3, 0.8, 3);
 
   return 0;
 }
