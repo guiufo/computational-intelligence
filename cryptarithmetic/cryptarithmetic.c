@@ -24,7 +24,7 @@ typedef struct population {
 }Population;
 */
 
-void makeExperiment(int popsize, int generations, int tour, float cross, float mutation) {
+int makeExperiment(int popsize, int generations, int tour, float cross, float mutation) {
   // Init random population and evaluate individuals
   Population *population;
   population = (Population*) malloc(sizeof(Population));
@@ -33,20 +33,29 @@ void makeExperiment(int popsize, int generations, int tour, float cross, float m
 
   // Run n generations
   for(int i = 0; i < generations; i++) {
-    population = sortPopulation(population);
     // Verify if solution is found
-    if(population->individuals[0].fitness == 0) break;
+    if(population->individuals[0].fitness == 0){
+      free(population);
+      return 1;
+    }
+    population = sortPopulation(population);
     population = tournament(population, tour, cross);
     population = cyclicCrossover(population, cross);
     population = mutate(population, mutation, cross);
     population = evaluateSendPopulation(population);
   }
-  showPopulation(population);
+  free(population);
+  return 0;
 }
 
 int main() {
-  srand(time(NULL));
-  makeExperiment(100, 200, 3, 0.8, 0.1);
+  int counter = 0;
+  time_t t;
+  srand(time(&t));
+
+  for(int i=0; i<100; i++)
+    counter += makeExperiment(100, 200, 3, 0.8, 0.1);
+  printf("%d\n", counter);
 
   return 0;
 }

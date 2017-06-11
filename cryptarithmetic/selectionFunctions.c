@@ -6,7 +6,7 @@ Population* tournament(Population *population, int tourSize, float cross) {
   int psize = population->psize;
   Population *crossPopulation;
   // Get number of bytes allocated by population
-  int prealsize =  psize*sizeof(Individual)+sizeof(int);
+  int prealsize =  psize*sizeof(Individual)+sizeof(Population);
 
   // Create hard copy of population
   crossPopulation = (Population *) malloc(sizeof(Population));
@@ -25,11 +25,9 @@ Population* tournament(Population *population, int tourSize, float cross) {
 				bestIndex = randInt;
 			}
 		}
-		// Copy winner to i'th row of temp population
-		for(j=0; j<11; j++) {
-			crossPopulation->individuals[i].dna[j] = population->individuals[bestIndex].dna[j];
-		}
+		crossPopulation->individuals[i] = population->individuals[bestIndex];
 	}
+
   // Return the winners population with elitism
 	return crossPopulation;
 }

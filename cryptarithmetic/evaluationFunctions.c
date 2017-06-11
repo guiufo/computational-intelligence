@@ -23,7 +23,7 @@ Individual evaluateSendIndividual(Individual individual) {
 	money = individual.dna[4]*10000+individual.dna[5]*1000 \
     +individual.dna[2]*100+individual.dna[1]*10+individual.dna[7];
 	// Set fitness value for the i'th individual
-	individual.fitness = abs((send + more) - money);
+	individual.fitness = abs(send + more - money);
   return individual;
 }
 
@@ -44,6 +44,6 @@ Individual evaluateEatIndividual(Individual individual) {
 	apple = individual.dna[1]*10000+individual.dna[4]*1000 \
     +individual.dna[4]*100+individual.dna[5]*10+individual.dna[0];
 	// Set fitness value for the i'th individual
-	individual.fitness = abs((eat + that) - apple);
+	individual.fitness = abs(eat + that - apple);
   return individual;
 }
