@@ -53,7 +53,7 @@ Individual evaluateEatIndividual(Individual individual) {
 	eat = individual.dna[0]*100+individual.dna[1]*10 \
     +individual.dna[2];
 	that = individual.dna[2]*1000+individual.dna[3]*100 \
-    +individual.dna[1]*10+individual.dna[3];
+    +individual.dna[1]*10+individual.dna[2];
 	apple = individual.dna[1]*10000+individual.dna[4]*1000 \
     +individual.dna[4]*100+individual.dna[5]*10+individual.dna[0];
 	// Set fitness value for the i'th individual
@@ -74,7 +74,7 @@ Individual evaluateCrossIndividual(Individual individual) {
   int cross, roads, danger;
   cross = roads = danger = 0;
 	cross = individual.dna[0]*10000+individual.dna[1]*1000 \
-    +individual.dna[2]*100+individual.dna[3]*10+individual.dna[4];
+    +individual.dna[2]*100+individual.dna[3]*10+individual.dna[3];
 	roads = individual.dna[1]*10000+individual.dna[2]*1000 \
     +individual.dna[4]*100+individual.dna[5]*10+individual.dna[3];
 	danger = individual.dna[5]*100000+individual.dna[4]*10000 \
