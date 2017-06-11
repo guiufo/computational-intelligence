@@ -39,7 +39,8 @@ int makeExperiment(int popsize, int generations, int tour, float cross, float mu
       return 1;
     }
     population = sortPopulation(population);
-    population = tournament(population, tour, cross);
+    // population = tournament(population, tour, cross);
+    population = roulette(population, cross);
     population = cyclicCrossover(population, cross);
     population = mutate(population, mutation, cross);
     population = evaluateSendPopulation(population);
