@@ -2,8 +2,6 @@
 
 // Receives a sorted population to maintain elitism
 Population* tournament(Population *population, int tourSize, float cross) {
-  time_t t;
-	srand((unsigned)time(&t));
 	int i, j, best, bestIndex, randInt;
   int psize = population->psize;
   Population *crossPopulation;

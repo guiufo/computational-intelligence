@@ -7,8 +7,6 @@ void showPopulation(Population *population);
 
 // Init a random population of given size
 Population* initPopulation(Population *population, int psize) {
-  time_t t;
-  srand((unsigned)time(&t));
   int i, j, temp, tempRand;
 
   population->psize = psize;

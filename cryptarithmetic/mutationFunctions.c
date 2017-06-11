@@ -1,8 +1,6 @@
 #include "types.h"
 
 Population* mutate(Population *population, float mutation, float cross) {
-  time_t t;
-  srand((unsigned)time(&t));
   int i, randColumnA, randColumnB, temp;
   int psize = population->psize;
   float randFloat;

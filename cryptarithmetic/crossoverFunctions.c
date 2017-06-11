@@ -2,8 +2,6 @@
 
 //
 Population* cyclicCrossover(Population *population, float cross) {
-  time_t t;
-  srand((unsigned)time(&t));
   int i, j, temp;
   int tempIndex, initialValue, nextValue;
   int psize = population->psize;

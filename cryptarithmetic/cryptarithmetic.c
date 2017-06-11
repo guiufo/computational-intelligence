@@ -45,6 +45,7 @@ void makeExperiment(int popsize, int generations, int tour, float cross, float m
 }
 
 int main() {
+  srand(time(NULL));
   makeExperiment(100, 200, 3, 0.8, 0.1);
 
   return 0;
