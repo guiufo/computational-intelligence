@@ -27,12 +27,12 @@ Individual evaluateSendIndividual(Individual individual) {
   // sendmory
   int send, more, money;
   send = more = money = 0;
-	send = individual.dna[0]*1000+individual.dna[1]*100 \
-    +individual.dna[2]*10+individual.dna[3];
-	more = individual.dna[4]*1000+individual.dna[5]*100 \
-    +individual.dna[6]*10+individual.dna[1];
-	money = individual.dna[4]*10000+individual.dna[5]*1000 \
-    +individual.dna[2]*100+individual.dna[1]*10+individual.dna[7];
+	send = individual.cromossome[0]*1000+individual.cromossome[1]*100 \
+    +individual.cromossome[2]*10+individual.cromossome[3];
+	more = individual.cromossome[4]*1000+individual.cromossome[5]*100 \
+    +individual.cromossome[6]*10+individual.cromossome[1];
+	money = individual.cromossome[4]*10000+individual.cromossome[5]*1000 \
+    +individual.cromossome[2]*100+individual.cromossome[1]*10+individual.cromossome[7];
 	// Set fitness value for the i'th individual
 	individual.fitness = abs(send + more - money);
   return individual;
@@ -50,12 +50,12 @@ Individual evaluateEatIndividual(Individual individual) {
   // eathpl
   int eat, that, apple;
   eat = that = apple = 0;
-	eat = individual.dna[0]*100+individual.dna[1]*10 \
-    +individual.dna[2];
-	that = individual.dna[2]*1000+individual.dna[3]*100 \
-    +individual.dna[1]*10+individual.dna[2];
-	apple = individual.dna[1]*10000+individual.dna[4]*1000 \
-    +individual.dna[4]*100+individual.dna[5]*10+individual.dna[0];
+	eat = individual.cromossome[0]*100+individual.cromossome[1]*10 \
+    +individual.cromossome[2];
+	that = individual.cromossome[2]*1000+individual.cromossome[3]*100 \
+    +individual.cromossome[1]*10+individual.cromossome[2];
+	apple = individual.cromossome[1]*10000+individual.cromossome[4]*1000 \
+    +individual.cromossome[4]*100+individual.cromossome[5]*10+individual.cromossome[0];
 	// Set fitness value for the i'th individual
 	individual.fitness = abs(eat + that - apple);
   return individual;
@@ -73,12 +73,12 @@ Individual evaluateCrossIndividual(Individual individual) {
   // crosadnge
   int cross, roads, danger;
   cross = roads = danger = 0;
-	cross = individual.dna[0]*10000+individual.dna[1]*1000 \
-    +individual.dna[2]*100+individual.dna[3]*10+individual.dna[3];
-	roads = individual.dna[1]*10000+individual.dna[2]*1000 \
-    +individual.dna[4]*100+individual.dna[5]*10+individual.dna[3];
-	danger = individual.dna[5]*100000+individual.dna[4]*10000 \
-    +individual.dna[6]*1000+individual.dna[7]*100+individual.dna[8]*10+individual.dna[1];
+	cross = individual.cromossome[0]*10000+individual.cromossome[1]*1000 \
+    +individual.cromossome[2]*100+individual.cromossome[3]*10+individual.cromossome[3];
+	roads = individual.cromossome[1]*10000+individual.cromossome[2]*1000 \
+    +individual.cromossome[4]*100+individual.cromossome[5]*10+individual.cromossome[3];
+	danger = individual.cromossome[5]*100000+individual.cromossome[4]*10000 \
+    +individual.cromossome[6]*1000+individual.cromossome[7]*100+individual.cromossome[8]*10+individual.cromossome[1];
 	// Set fitness value for the i'th individual
 	individual.fitness = abs(cross + roads - danger);
   return individual;
@@ -96,12 +96,12 @@ Individual evaluateCocaIndividual(Individual individual) {
   // coalsi
   int coca, cola, oasis;
   coca = cola = oasis = 0;
-	coca = individual.dna[0]*1000+individual.dna[1]*100 \
-    +individual.dna[0]*10+individual.dna[2];
-	cola = individual.dna[0]*1000+individual.dna[1]*100 \
-    +individual.dna[3]*10+individual.dna[2];
-	oasis = individual.dna[1]*10000+individual.dna[2]*1000 \
-    +individual.dna[4]*100+individual.dna[5]*10+individual.dna[4];
+	coca = individual.cromossome[0]*1000+individual.cromossome[1]*100 \
+    +individual.cromossome[0]*10+individual.cromossome[2];
+	cola = individual.cromossome[0]*1000+individual.cromossome[1]*100 \
+    +individual.cromossome[3]*10+individual.cromossome[2];
+	oasis = individual.cromossome[1]*10000+individual.cromossome[2]*1000 \
+    +individual.cromossome[4]*100+individual.cromossome[5]*10+individual.cromossome[4];
 	// Set fitness value for the i'th individual
 	individual.fitness = abs(coca + cola - oasis);
   return individual;
@@ -119,12 +119,12 @@ Individual evaluateDonaldIndividual(Individual individual) {
   // donalgerbt
   int donald, gerald, robert;
   donald = gerald = robert = 0;
-	donald = individual.dna[0]*100000+individual.dna[1]*10000 \
-    +individual.dna[2]*1000+individual.dna[3]*100+individual.dna[4]*10+individual.dna[0];
-	gerald = individual.dna[5]*100000+individual.dna[6]*10000 \
-    +individual.dna[7]*1000+individual.dna[3]*100+individual.dna[4]*10+individual.dna[0];
-	robert = individual.dna[7]*100000+individual.dna[1]*10000 \
-    +individual.dna[8]*1000+individual.dna[6]*100+individual.dna[7]*10+individual.dna[9];
+	donald = individual.cromossome[0]*100000+individual.cromossome[1]*10000 \
+    +individual.cromossome[2]*1000+individual.cromossome[3]*100+individual.cromossome[4]*10+individual.cromossome[0];
+	gerald = individual.cromossome[5]*100000+individual.cromossome[6]*10000 \
+    +individual.cromossome[7]*1000+individual.cromossome[3]*100+individual.cromossome[4]*10+individual.cromossome[0];
+	robert = individual.cromossome[7]*100000+individual.cromossome[1]*10000 \
+    +individual.cromossome[8]*1000+individual.cromossome[6]*100+individual.cromossome[7]*10+individual.cromossome[9];
 	// Set fitness value for the i'th individual
 	individual.fitness = abs(donald + gerald - robert);
   return individual;

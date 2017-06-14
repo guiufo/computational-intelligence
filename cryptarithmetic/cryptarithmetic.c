@@ -14,7 +14,7 @@ Population* mutate(Population *population, float mutation, float cross);
 
 typedef struct individual {
 	// permutation vector
-  int dna[10];
+  int cromossome[10];
 	int fitness;
 }Individual;
 

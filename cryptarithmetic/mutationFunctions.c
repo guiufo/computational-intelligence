@@ -11,10 +11,10 @@ Population* mutate(Population *population, float mutation, float cross) {
     if(randFloat <= mutation) {
       randColumnA = rand() % 10;
       randColumnB = rand() % 10;
-      // Swap two values in dna
-      temp = population->individuals[i].dna[randColumnA];
-      population->individuals[i].dna[randColumnA] = population->individuals[i].dna[randColumnB];
-      population->individuals[i].dna[randColumnB] = temp;
+      // Swap two values in cromossome
+      temp = population->individuals[i].cromossome[randColumnA];
+      population->individuals[i].cromossome[randColumnA] = population->individuals[i].cromossome[randColumnB];
+      population->individuals[i].cromossome[randColumnB] = temp;
     }
   }
 

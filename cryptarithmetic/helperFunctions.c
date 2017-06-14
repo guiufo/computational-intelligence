@@ -13,13 +13,13 @@ Population* initPopulation(Population *population, int psize) {
   population->individuals = malloc(psize * sizeof(Individual));
   for(i=0; i < psize; i++){
     for(j=0;j<10;j++){
-      population->individuals[i].dna[j] = j;
+      population->individuals[i].cromossome[j] = j;
     }
     for(j=0; j<10; j++) {
-      temp = population->individuals[i].dna[j];
+      temp = population->individuals[i].cromossome[j];
       tempRand = rand()%10;
-      population->individuals[i].dna[j] = population->individuals[i].dna[tempRand];
-      population->individuals[i].dna[tempRand] = temp;
+      population->individuals[i].cromossome[j] = population->individuals[i].cromossome[tempRand];
+      population->individuals[i].cromossome[tempRand] = temp;
 
     }
     population->individuals[i].fitness = 0;
@@ -50,7 +50,7 @@ void showPopulation(Population *population) {
   printf("\n");
   for(i = 0; i < 5; i++){
     for(j = 0; j < 10; j++) {
-      printf("%d ", population->individuals[i].dna[j]);
+      printf("%d ", population->individuals[i].cromossome[j]);
     }
     printf(" %d\n", population->individuals[i].fitness);
   }
@@ -61,7 +61,7 @@ void showPopulation(Population *population) {
   printf("\n");
   for(i = population->psize-5; i < population->psize; i++){
     for(j = 0; j < 10; j++) {
-      printf("%d ", population->individuals[i].dna[j]);
+      printf("%d ", population->individuals[i].cromossome[j]);
     }
     printf(" %d\n", population->individuals[i].fitness);
   }
@@ -72,7 +72,7 @@ void showFullPopulation(Population *population) {
   printf("\n");
   for(i = 0; i < population->psize; i++){
     for(j = 0; j < 10; j++) {
-      printf("%d ", population->individuals[i].dna[j]);
+      printf("%d ", population->individuals[i].cromossome[j]);
     }
     printf(" %d\n", population->individuals[i].fitness);
   }

@@ -18,7 +18,7 @@
 
 // Individual is a "hard" type
 typedef struct individual {
-  int dna[10];
+  int cromossome[10];
 	int fitness;
 }Individual;
 

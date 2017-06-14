@@ -9,23 +9,23 @@ Population* cyclicCrossover(Population *population, float cross) {
   // Makes a crossover in selected fathers
   for(i=(int)psize-cross*psize; i<psize-1; i+=2) {
       tempIndex = rand()%10;
-      initialValue = population->individuals[i].dna[tempIndex];
+      initialValue = population->individuals[i].cromossome[tempIndex];
 
-      while(population->individuals[i+1].dna[tempIndex] != initialValue) {
-        nextValue = population->individuals[i+1].dna[tempIndex];
+      while(population->individuals[i+1].cromossome[tempIndex] != initialValue) {
+        nextValue = population->individuals[i+1].cromossome[tempIndex];
         for(j=0; j<10; j++) {
-          if(j != tempIndex && population->individuals[i].dna[j] == nextValue) {
-            temp = population->individuals[i+1].dna[tempIndex];
-            population->individuals[i+1].dna[tempIndex] = population->individuals[i].dna[tempIndex];
-            population->individuals[i].dna[tempIndex] = temp;
+          if(j != tempIndex && population->individuals[i].cromossome[j] == nextValue) {
+            temp = population->individuals[i+1].cromossome[tempIndex];
+            population->individuals[i+1].cromossome[tempIndex] = population->individuals[i].cromossome[tempIndex];
+            population->individuals[i].cromossome[tempIndex] = temp;
             tempIndex = j;
             break;
           }
         }
       }
-      temp = population->individuals[i+1].dna[tempIndex];
-      population->individuals[i+1].dna[tempIndex] = population->individuals[i].dna[tempIndex];
-      population->individuals[i].dna[tempIndex] = temp;
+      temp = population->individuals[i+1].cromossome[tempIndex];
+      population->individuals[i+1].cromossome[tempIndex] = population->individuals[i].cromossome[tempIndex];
+      population->individuals[i].cromossome[tempIndex] = temp;
   }
 
   return population;
