@@ -2,6 +2,7 @@
 
 Population* tournament(Population *population, int tourSize, float cross);
 Population* roulette(Population *population, float cross);
+Population* stochasticRoullete(Population *population, float cross, int tourSize);
 
 // Receives a sorted population to maintain elitism
 Population* tournament(Population *population, int tourSize, float cross) {
@@ -74,4 +75,9 @@ Population* roulette(Population *population, float cross) {
 
   return crossPopulation;
 
+}
+
+Population* stochasticRoullete(Population *population, float cross, int tourSize) {
+
+	return population;
 }
