@@ -15,19 +15,19 @@
 
 // Big integer
 #define BIGINT 10000000
-#define INDIVIDUAL_SIZE 34
 
-// Individual is a "hard" type
 typedef struct individual {
   // Each gene has weight, operator and value
   // Operator mapping: 0 -> >=, 1 -> <, 2 -> =, 3 -> !=
   float cromossome[34][3];
-	int fitness;
-  int nominal;
+  // Se = tp / (tp + fn)
+  // Sp = tn / (tn + fp)
+  // fitness = Se * Sp
+	float fitness;
+  // One if continuous
+  int continuous;
 }Individual;
 
-#define INDIVIDUAL_SIZE 34
-// Population is a "dynamic" type
 typedef struct population {
 	Individual *individuals;
 	int psize;
