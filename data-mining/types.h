@@ -15,17 +15,20 @@
 
 // Big integer
 #define BIGINT 10000000
+#define THRESHOLD 0.3
+
+typedef struct base {
+  float weight;
+  // Operator mapping: 0 -> >=, 1 -> <, 2 -> =, 3 -> !=
+  int op;
+  int value;
+  int continuous;
+  int present;
+}Base;
 
 typedef struct individual {
-  // Each gene has weight, operator and value
-  // Operator mapping: 0 -> >=, 1 -> <, 2 -> =, 3 -> !=
-  float cromossome[34][3];
-  // Se = tp / (tp + fn)
-  // Sp = tn / (tn + fp)
-  // fitness = Se * Sp
+  Base cromossome[34];
 	float fitness;
-  // One if continuous
-  int continuous;
 }Individual;
 
 typedef struct population {

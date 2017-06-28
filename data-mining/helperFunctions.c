@@ -15,22 +15,25 @@ Population* initPopulation(Population *population, int psize) {
   population->individuals = malloc(psize * sizeof(Individual));
   for(i=0; i < psize; i++){
     for(j=0;j<32;j++){
-      population->individuals[i].cromossome[j][0] = (double)rand()/(double)RAND_MAX;
-      population->individuals[i].cromossome[j][1] = rand() % 2;
-      population->individuals[i].cromossome[j][2] = rand() % 4;
-      population->individuals[i].continuous = 1;
+      population->individuals[i].cromossome[j].weight = (double)rand()/(double)RAND_MAX;
+      population->individuals[i].cromossome[j].op = rand() % 2;
+      population->individuals[i].cromossome[j].value = rand() % 4;
+      population->individuals[i].cromossome[j].continuous = 1;
+      population->individuals[i].cromossome[j].present = 0;
     }
-      // age from 0 to 100
-      population->individuals[i].cromossome[32][0] = (double)rand()/(double)RAND_MAX;
-      population->individuals[i].cromossome[32][1] = rand() % 2 + 2;
-      population->individuals[i].cromossome[32][2] = rand() % 100;
-      population->individuals[i].continuous = 1;
+      // family history is 0 or 1
+      population->individuals[i].cromossome[32].weight = (double)rand()/(double)RAND_MAX;
+      population->individuals[i].cromossome[32].op = rand() % 2 + 2;
+      population->individuals[i].cromossome[32].value = rand() % 2;
+      population->individuals[i].cromossome[32].continuous = 0;
+      population->individuals[i].cromossome[32].present = 0;
 
-      // family history
-      population->individuals[i].cromossome[33][0] = (double)rand()/(double)RAND_MAX;
-      population->individuals[i].cromossome[33][1] = rand() % 2 + 2;
-      population->individuals[i].cromossome[33][2] = rand() % 2;
-      population->individuals[i].continuous = 1;
+      // age from 0 to 100
+      population->individuals[i].cromossome[33].weight = (double)rand()/(double)RAND_MAX;
+      population->individuals[i].cromossome[33].op = rand() % 2 + 2;
+      population->individuals[i].cromossome[33].value = rand() % 100;
+      population->individuals[i].cromossome[33].continuous = 0;
+      population->individuals[i].cromossome[33].present = 0;
   }
   return population;
 }
@@ -41,15 +44,16 @@ void showPopulation(Population *population) {
   printf("\n");
   for(i = 0; i < population->psize; i++){
     for(j = 0; j < 34; j++) {
-      printf("%.2f %.0f %.0f|", population->individuals[i].cromossome[j][0],
-      population->individuals[i].cromossome[j][1], population->individuals[i].cromossome[j][2]);
+      printf("%.2f %d %d|", population->individuals[i].cromossome[j].weight,
+      population->individuals[i].cromossome[j].op, population->individuals[i].cromossome[j].value);
     }
     printf("\n");
     printf("\n");
   }
 }
 
-int** getDermatologyData() {
+
+int** getTrainingData() {
     int** matrix;
     int i, j;
     matrix = (int**)malloc(358 * sizeof(int*));
