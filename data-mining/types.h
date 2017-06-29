@@ -16,6 +16,9 @@
 // Big integer
 #define BIGINT 10000000
 #define THRESHOLD 0.3
+#define TRAININGSIZE 238
+#define TESTSIZE 120
+#define INDIVIDUALSIZE 34
 
 typedef struct base {
   float weight;
@@ -25,6 +28,12 @@ typedef struct base {
   int continuous;
   int present;
 }Base;
+
+// Type to hold training and testing data
+typedef struct data {
+  int **training;
+  int **testing;
+} Data;
 
 typedef struct individual {
   Base cromossome[34];

@@ -1,5 +1,6 @@
 #include "types.h"
 #include "helperFunctions.c"
+#include "evaluationFunctions.c"
 
 // 50 individuals and 50 generations, Stochastic roulette selection
 // 100% crossover rate, elitism of the best father
@@ -10,13 +11,16 @@ int makeExperiment() {
 
 int main() {
   srand(time(NULL));
+  int i, j;
+  int dClass = 1;
   Population *population;
   population = initPopulation(population, 50);
-  // Get a 358 X 35 matrix
-  // 238 for training, 120 for testing
-  //int** data = getDermatologyData();
+  int** data = getData();
 
-  // population = fitness(population);
+  // Fitness of all population
+  for(i=0; i<50; i++) {
+    population->individuals[i] = fitness(population->individuals[i], data, dClass);
+  }
 
   showPopulation(population);
 

@@ -3,8 +3,8 @@
 // Functions signatures
 Population* initPopulation(Population *population, int psize);
 void showPopulation(Population *population);
-void showDermatologyData(int** data);
-int** getDermatologyData();
+void showData(int** data);
+int** getData();
 
 // Init a random population of given size
 Population* initPopulation(Population *population, int psize) {
@@ -14,7 +14,7 @@ Population* initPopulation(Population *population, int psize) {
   population->psize = psize;
   population->individuals = malloc(psize * sizeof(Individual));
   for(i=0; i < psize; i++){
-    for(j=0;j<32;j++){
+    for(j=0;j<34;j++){
       population->individuals[i].cromossome[j].weight = (double)rand()/(double)RAND_MAX;
       population->individuals[i].cromossome[j].op = rand() % 2;
       population->individuals[i].cromossome[j].value = rand() % 4;
@@ -22,11 +22,11 @@ Population* initPopulation(Population *population, int psize) {
       population->individuals[i].cromossome[j].present = 0;
     }
       // family history is 0 or 1
-      population->individuals[i].cromossome[32].weight = (double)rand()/(double)RAND_MAX;
-      population->individuals[i].cromossome[32].op = rand() % 2 + 2;
-      population->individuals[i].cromossome[32].value = rand() % 2;
-      population->individuals[i].cromossome[32].continuous = 0;
-      population->individuals[i].cromossome[32].present = 0;
+      population->individuals[i].cromossome[12].weight = (double)rand()/(double)RAND_MAX;
+      population->individuals[i].cromossome[12].op = rand() % 2 + 2;
+      population->individuals[i].cromossome[12].value = rand() % 2;
+      population->individuals[i].cromossome[12].continuous = 0;
+      population->individuals[i].cromossome[12].present = 0;
 
       // age from 0 to 100
       population->individuals[i].cromossome[33].weight = (double)rand()/(double)RAND_MAX;
@@ -38,8 +38,8 @@ Population* initPopulation(Population *population, int psize) {
   return population;
 }
 
-// Show population
-void showPopulation(Population *population) {
+// Show full population
+void showFullPopulation(Population *population) {
   int i, j;
   printf("\n");
   for(i = 0; i < population->psize; i++){
@@ -52,8 +52,27 @@ void showPopulation(Population *population) {
   }
 }
 
+// Show population
+void showPopulation(Population *population) {
+  int i, j;
+  printf("\n");
+  for(i = 0; i < population->psize; i++){
+    for(j = 0; j < 5; j++) {
+      printf("%.2f %d %d|", population->individuals[i].cromossome[j].weight,
+      population->individuals[i].cromossome[j].op, population->individuals[i].cromossome[j].value);
+    }
+    printf("  ...  ");
+    for(j = 29; j < 34; j++) {
+      printf("%.2f %d %d|", population->individuals[i].cromossome[j].weight,
+      population->individuals[i].cromossome[j].op, population->individuals[i].cromossome[j].value);
+    }
+    printf("   %f", population->individuals[i].fitness);
+    printf("\n");
+    printf("\n");
+  }
+}
 
-int** getTrainingData() {
+int** getData() {
     int** matrix;
     int i, j;
     matrix = (int**)malloc(358 * sizeof(int*));
@@ -97,7 +116,7 @@ exit:
     return matrix;
 }
 
-void showDermatologyData(int** data) {
+void showData(int** data) {
   int i, j;
   for(i=0; i<358; i++){
     for(j=0; j<35; j++) {
