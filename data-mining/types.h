@@ -18,7 +18,7 @@
 #define THRESHOLD 0.3
 #define TRAININGSIZE 238
 #define TESTSIZE 120
-#define INDIVIDUALSIZE 34
+#define INDIVIDUALSIZE 33
 
 typedef struct base {
   float weight;
@@ -35,8 +35,9 @@ typedef struct data {
   int **testing;
 } Data;
 
+// Age is not included
 typedef struct individual {
-  Base cromossome[34];
+  Base cromossome[33];
 	float fitness;
 }Individual;
 
