@@ -12,14 +12,14 @@ int makeExperiment() {
 int main() {
   srand(time(NULL));
   int i, j;
-  int dClass = 1;
+  int diseaseClass = 1;
   Population *population;
   population = initPopulation(population, 50);
   int** data = getData();
 
   // Fitness of all population
   for(i=0; i<50; i++) {
-    population->individuals[i] = fitness(population->individuals[i], data, dClass);
+    population->individuals[i] = fitness(population->individuals[i], data, diseaseClass);
   }
 
   showPopulation(population);

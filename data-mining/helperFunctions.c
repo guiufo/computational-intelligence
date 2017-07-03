@@ -14,7 +14,7 @@ Population* initPopulation(Population *population, int psize) {
   population->psize = psize;
   population->individuals = malloc(psize * sizeof(Individual));
   for(i=0; i < psize; i++){
-    for(j=0;j<34;j++){
+    for(j=0;j<33;j++){
       population->individuals[i].cromossome[j].weight = (double)rand()/(double)RAND_MAX;
       population->individuals[i].cromossome[j].op = rand() % 2;
       population->individuals[i].cromossome[j].value = rand() % 4;
@@ -27,13 +27,6 @@ Population* initPopulation(Population *population, int psize) {
       population->individuals[i].cromossome[12].value = rand() % 2;
       population->individuals[i].cromossome[12].continuous = 0;
       population->individuals[i].cromossome[12].present = 0;
-
-      // age from 0 to 100
-      population->individuals[i].cromossome[33].weight = (double)rand()/(double)RAND_MAX;
-      population->individuals[i].cromossome[33].op = rand() % 2 + 2;
-      population->individuals[i].cromossome[33].value = rand() % 100;
-      population->individuals[i].cromossome[33].continuous = 0;
-      population->individuals[i].cromossome[33].present = 0;
   }
   return population;
 }
@@ -43,7 +36,7 @@ void showFullPopulation(Population *population) {
   int i, j;
   printf("\n");
   for(i = 0; i < population->psize; i++){
-    for(j = 0; j < 34; j++) {
+    for(j = 0; j < 33; j++) {
       printf("%.2f %d %d|", population->individuals[i].cromossome[j].weight,
       population->individuals[i].cromossome[j].op, population->individuals[i].cromossome[j].value);
     }
@@ -62,7 +55,7 @@ void showPopulation(Population *population) {
       population->individuals[i].cromossome[j].op, population->individuals[i].cromossome[j].value);
     }
     printf("  ...  ");
-    for(j = 29; j < 34; j++) {
+    for(j = 29; j < 33; j++) {
       printf("%.2f %d %d|", population->individuals[i].cromossome[j].weight,
       population->individuals[i].cromossome[j].op, population->individuals[i].cromossome[j].value);
     }
