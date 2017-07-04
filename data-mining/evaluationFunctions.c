@@ -3,6 +3,7 @@
 int match(Individual individual, int* dataRow);
 Individual fitness(Individual individual, int** data, int diseaseClass);
 
+// Train individuals and calculate fitness
 Individual fitness(Individual individual, int** data, int diseaseClass) {
   int i, matched;
   // True positive, False positive, True negative and False negative

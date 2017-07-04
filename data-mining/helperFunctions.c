@@ -45,7 +45,7 @@ void showFullPopulation(Population *population) {
   }
 }
 
-// Show population
+// Show population (Resumed individual)
 void showPopulation(Population *population) {
   int i, j;
   printf("\n");
@@ -65,6 +65,7 @@ void showPopulation(Population *population) {
   }
 }
 
+// Reads file with dermatology data an return a matrix of the data
 int** getData() {
     int** matrix;
     int i, j;
