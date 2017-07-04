@@ -17,11 +17,12 @@
 #define BIGINT 10000000
 #define THRESHOLD 0.3
 #define TRAININGSIZE 238
-#define TESTSIZE 120
+#define TESTINDEX 120
 #define INDIVIDUALSIZE 33
+#define CLASSINDEX 34
 
 typedef struct base {
-  float weight;
+  double weight;
   // Operator mapping: 0 -> >=, 1 -> <, 2 -> =, 3 -> !=
   int op;
   int value;
