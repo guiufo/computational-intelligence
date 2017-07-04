@@ -4,7 +4,7 @@
 Population* initPopulation(Population *population, int psize);
 void showPopulation(Population *population);
 void showData(int** data);
-int** getData();
+Data* getData(int diseaseClass);
 
 // Init a random population of given size
 Population* initPopulation(Population *population, int psize) {
@@ -36,7 +36,7 @@ void showFullPopulation(Population *population) {
   int i, j;
   printf("\n");
   for(i = 0; i < population->psize; i++){
-    for(j = 0; j < 33; j++) {
+    for(j = 0; j < INDIVIDUALSIZE; j++) {
       printf("%.2f %d %d|", population->individuals[i].cromossome[j].weight,
       population->individuals[i].cromossome[j].op, population->individuals[i].cromossome[j].value);
     }
@@ -45,7 +45,7 @@ void showFullPopulation(Population *population) {
   }
 }
 
-// Show population
+// Show population (Resumed individual)
 void showPopulation(Population *population) {
   int i, j;
   printf("\n");
@@ -55,7 +55,7 @@ void showPopulation(Population *population) {
       population->individuals[i].cromossome[j].op, population->individuals[i].cromossome[j].value);
     }
     printf("  ...  ");
-    for(j = 29; j < 33; j++) {
+    for(j = 29; j < INDIVIDUALSIZE; j++) {
       printf("%.2f %d %d|", population->individuals[i].cromossome[j].weight,
       population->individuals[i].cromossome[j].op, population->individuals[i].cromossome[j].value);
     }
@@ -65,13 +65,27 @@ void showPopulation(Population *population) {
   }
 }
 
-int** getData() {
+// Reads file with dermatology data an return a matrix of the data
+Data* getData(int diseaseClass) {
     int** matrix;
     int i, j;
+    Data* ddata;
+
+    // Alloc matrix to hold all data
     matrix = (int**)malloc(358 * sizeof(int*));
     for(i=0; i<358; i++)
         matrix[i] = (int*)malloc(35 * sizeof(int));
 
+    // Alloc Data struct to hold training and test data
+    ddata = (Data*) malloc(sizeof(Data));
+    ddata->training = malloc(238*sizeof(int*));
+    ddata->testing = malloc(120*sizeof(int*));
+    for(i=0; i<238; i++)
+      ddata->training[i] = malloc(DATAROWSIZE*sizeof(int));
+    for(i=0; i<120; i++)
+      ddata->testing[i] = malloc(DATAROWSIZE*sizeof(int));
+
+    // Read file
     FILE *fp;
     int data,row,col,c,count,inc;
     int *array, capacity=35;
@@ -104,16 +118,43 @@ int** getData() {
             matrix[i][j] = array[i*col + j];
     }
 
+    // Generate data struct based on disease class
+
+    // Generate data struct to test
+    for(i=0; i<238; i++) {
+      for(j=0; j<DATAROWSIZE; j++) {
+        ddata->training[i][j] = matrix[i][j];
+      }
+    }
+
+    for(i=238; i<358; i++) {
+      for(j=0; j<DATAROWSIZE; j++) {
+        ddata->testing[i-238][j] = matrix[i][j];
+      }
+    }
+
 exit:
     fclose(fp);
-    return matrix;
+    return ddata;
 }
 
-void showData(int** data) {
+// Show training data
+void showTrainingData(Data* data) {
   int i, j;
-  for(i=0; i<358; i++){
-    for(j=0; j<35; j++) {
-      printf("%d,", data[i][j]);
+  for(i=0; i<238; i++){
+    for(j=0; j<DATAROWSIZE; j++) {
+      printf("%d,", data->training[i][j]);
+    }
+    printf("\n");
+  }
+}
+
+// Show training data
+void showTestingData(Data* data) {
+  int i, j;
+  for(i=0; i<120; i++){
+    for(j=0; j<DATAROWSIZE; j++) {
+      printf("%d,", data->testing[i][j]);
     }
     printf("\n");
   }

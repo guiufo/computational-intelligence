@@ -2,8 +2,9 @@
 #include "helperFunctions.c"
 #include "evaluationFunctions.c"
 #include "mutationFunctions.c"
+#include "crossoverFunctions.c"
 
-int experiment(int populationSize, double mutationRate, int diseaseClass);
+void experiment(int populationSize, double mutationRate, int diseaseClass);
 // 50 individuals and 50 generations, Stochastic roulette selection
 // 100% crossover rate, elitism of the best father
 int main() {
@@ -12,11 +13,11 @@ int main() {
   return 0;
 }
 
-int experiment(int populationSize, double mutationRate, int diseaseClass) {
+void experiment(int populationSize, double mutationRate, int diseaseClass) {
   int i, j;
   Population *population;
   population = initPopulation(population, populationSize);
-  int** data = getData();
+  Data* data = getData(diseaseClass);
 
   // Fitness of all population
   for(i=0; i<populationSize; i++) {
@@ -28,9 +29,12 @@ int experiment(int populationSize, double mutationRate, int diseaseClass) {
   for(i=0; i<populationSize; i++) {
     population->individuals[i] = mutate(population->individuals[i], mutationRate);
   }
-  printf("\n");
+
   printf("\n");
   showPopulation(population);
+  printf("\n");
 
-  return 0;
+  population = crossover(population);
+  showPopulation(population);
+
 }

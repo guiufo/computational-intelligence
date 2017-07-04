@@ -20,6 +20,7 @@
 #define TESTINDEX 120
 #define INDIVIDUALSIZE 33
 #define CLASSINDEX 34
+#define DATAROWSIZE 35
 
 typedef struct base {
   double weight;
