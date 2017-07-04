@@ -17,7 +17,7 @@ void experiment(int populationSize, double mutationRate, int diseaseClass) {
   int i, j;
   Population *population;
   population = initPopulation(population, populationSize);
-  int** data = getData();
+  Data* data = getData(diseaseClass);
 
   // Fitness of all population
   for(i=0; i<populationSize; i++) {
@@ -36,4 +36,5 @@ void experiment(int populationSize, double mutationRate, int diseaseClass) {
 
   population = crossover(population);
   showPopulation(population);
+
 }

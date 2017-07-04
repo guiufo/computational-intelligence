@@ -1,10 +1,10 @@
 #include "types.h"
 
 int match(Individual individual, int* dataRow);
-Individual fitness(Individual individual, int** data, int diseaseClass);
+Individual fitness(Individual individual, Data* data, int diseaseClass);
 
 // Train individuals and calculate fitness
-Individual fitness(Individual individual, int** data, int diseaseClass) {
+Individual fitness(Individual individual, Data* data, int diseaseClass) {
   int i, matched;
   // True positive, False positive, True negative and False negative
   double tp, fp, tn, fn, se, sp;
@@ -12,14 +12,14 @@ Individual fitness(Individual individual, int** data, int diseaseClass) {
 
   // Train individual
   for(i=0; i<TESTINDEX; i++) {
-    matched = match(individual, data[i]);
-    if(matched && data[i][CLASSINDEX] == diseaseClass)
+    matched = match(individual, data->training[i]);
+    if(matched && data->training[i][CLASSINDEX] == diseaseClass)
       tp += 1;
-    if(matched && data[i][CLASSINDEX] != diseaseClass)
+    if(matched && data->training[i][CLASSINDEX] != diseaseClass)
       fp += 1;
-    if(!matched && data[i][CLASSINDEX] != diseaseClass)
+    if(!matched && data->training[i][CLASSINDEX] != diseaseClass)
       tn += 1;
-    if(!matched && data[i][CLASSINDEX] == diseaseClass)
+    if(!matched && data->training[i][CLASSINDEX] == diseaseClass)
       fn += 1;
   }
 
