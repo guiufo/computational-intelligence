@@ -39,7 +39,7 @@ Population* tournament(Population *population, int tourSize, float cross) {
 Population* roulette(Population *population, float cross) {
   int i, j, fsum, psize, prealsize;
   float *probvector;
-  float randFloat, psum;
+  float randDouble, psum;
   Population *crossPopulation;
 
   psize = population->psize;
@@ -64,9 +64,9 @@ Population* roulette(Population *population, float cross) {
   }
   // Fill temp population with winners
 	for(i=(int)psize-cross*psize; i<psize; i++) {
-    randFloat = (double)rand()/(double)RAND_MAX;
+    randDouble = (double)rand()/(double)RAND_MAX;
     for(j=0; j<psize-1; j++) {
-      if(randFloat > probvector[j] && randFloat < probvector[j+1]) {
+      if(randDouble > probvector[j] && randDouble < probvector[j+1]) {
     		crossPopulation->individuals[i] = population->individuals[j];
         break;
       }

@@ -3,12 +3,12 @@
 Population* mutate(Population *population, float mutation, float cross) {
   int i, randColumnA, randColumnB, temp;
   int psize = population->psize;
-  float randFloat;
+  float randDouble;
 
   // Mutate children of selected fathers
   for(i=(int)psize-psize*cross; i<psize; i++) {
-    randFloat = (double)rand()/(double)RAND_MAX;
-    if(randFloat <= mutation) {
+    randDouble = (double)rand()/(double)RAND_MAX;
+    if(randDouble <= mutation) {
       randColumnA = rand() % 10;
       randColumnB = rand() % 10;
       // Swap two values in cromossome
