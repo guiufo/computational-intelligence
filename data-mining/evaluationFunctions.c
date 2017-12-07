@@ -2,6 +2,7 @@
 
 int match(Individual individual, int* dataRow);
 Individual fitness(Individual individual, Data* data, int diseaseClass);
+Population* populationFitness(Population* population, Data* data, int diseaseClass);
 
 // Train individuals and calculate fitness
 Individual fitness(Individual individual, Data* data, int diseaseClass) {
@@ -75,4 +76,13 @@ int match(Individual individual, int* dataRow) {
   }
 
   return matched;
+}
+
+
+Population* populationFitness(Population* population, Data* data, int diseaseClass){
+  for(int i=0; i<population->psize; i++) {
+    population->individuals[i] = fitness(population->individuals[i], data, diseaseClass);
+  }
+
+  return population;
 }

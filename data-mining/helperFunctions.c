@@ -5,6 +5,7 @@ Population* initPopulation(Population *population, int psize);
 void showPopulation(Population *population);
 void showData(int** data);
 Data* getData(int diseaseClass);
+Population* sortPopulation(Population* population);
 
 // Init a random population of given size
 Population* initPopulation(Population *population, int psize) {
@@ -158,4 +159,21 @@ void showTestingData(Data* data) {
     }
     printf("\n");
   }
+}
+
+// Insertion sort in decreasing order
+Population* sortPopulation(Population *population) {
+  int i, j;
+	Individual tempIndividual;
+	for(i=1; i < population->psize; i++) {
+		j = i;
+		while(j>0 && population->individuals[j].fitness > population->individuals[j-1].fitness) {
+			tempIndividual = population->individuals[j];
+			population->individuals[j] = population->individuals[j-1];
+			population->individuals[j-1] = tempIndividual;
+			j--;
+		}
+	}
+
+	return population;
 }

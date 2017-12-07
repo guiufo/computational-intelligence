@@ -19,11 +19,7 @@ void experiment(int populationSize, double mutationRate, int diseaseClass) {
   population = initPopulation(population, populationSize);
   Data* data = getData(diseaseClass);
 
-  // Fitness of all population
-  for(i=0; i<populationSize; i++) {
-    population->individuals[i] = fitness(population->individuals[i], data, diseaseClass);
-  }
-
+  population = populationFitness(population, data, diseaseClass);
   showPopulation(population);
 
   for(i=0; i<populationSize; i++) {
@@ -35,6 +31,8 @@ void experiment(int populationSize, double mutationRate, int diseaseClass) {
   printf("\n");
 
   population = crossover(population);
+  population = populationFitness(population, data, diseaseClass);
+  population = sortPopulation(population);
   showPopulation(population);
 
 }
