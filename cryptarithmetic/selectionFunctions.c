@@ -2,7 +2,7 @@
 
 Population* tournament(Population *population, int tourSize, float cross);
 Population* roulette(Population *population, float cross);
-Population* stochasticRoullete(Population *population, float cross, int tourSize);
+Population* stochasticRoulette(Population *population, float cross, int tourSize);
 
 // Receives a sorted population to maintain elitism
 Population* tournament(Population *population, int tourSize, float cross) {
@@ -77,7 +77,48 @@ Population* roulette(Population *population, float cross) {
 
 }
 
-Population* stochasticRoullete(Population *population, float cross, int tourSize) {
+Population* stochasticRoulette(Population *population, float cross, int tourSize) {
+  int i, j, k;
+  int fsum, psize, prealsize, best;
+  float *probvector;
+  float randDouble, psum;
+  Population *crossPopulation;
 
-	return population;
+  psize = population->psize;
+  // Get number of bytes allocated by population
+  prealsize =  psize*sizeof(Individual)+sizeof(Population);
+  crossPopulation = (Population *) malloc(sizeof(Population));
+  crossPopulation->individuals = malloc(psize*sizeof(Individual));
+  // Create hard copy of population
+  memcpy(crossPopulation, population, prealsize);
+
+  fsum = psum = 0;
+  probvector = malloc(psize*sizeof(int));
+
+  // Fitness sum
+  for(i=0; i<psize; i++){
+      fsum += population->individuals[i].fitness;
+  }
+  // Generate probabilites for each individual
+  for(i=0; i<psize; i++){
+    probvector[i] = psum + (float)population->individuals[i].fitness / fsum;
+    psum += probvector[i];
+  }
+  // Fill temp population with winners
+	for(i=(int)psize-cross*psize; i<psize; i++) {
+    best = BIGINT;
+    for(k=0; k < tourSize; k++) {
+      randDouble = (double)rand()/(double)RAND_MAX;
+      for(j=0; j<psize-1; j++) {
+          if(randDouble > probvector[j] && randDouble < probvector[j+1]) {
+            if(crossPopulation->individuals[j].fitness < best)
+              best = j;
+            break;
+          }
+      }
+    }
+    crossPopulation->individuals[i] = population->individuals[best];
+  }
+
+  return crossPopulation;
 }

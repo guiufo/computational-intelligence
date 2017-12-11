@@ -63,7 +63,7 @@ Individual evaluateEatIndividual(Individual individual) {
 
 Population* evaluateCrossPopulation(Population *population) {
   for(int i = 0; i < population->psize; i++){
-    population->individuals[i] = evaluateEatIndividual(population->individuals[i]);
+    population->individuals[i] = evaluateCrossIndividual(population->individuals[i]);
   }
   return population;
 }
@@ -86,7 +86,7 @@ Individual evaluateCrossIndividual(Individual individual) {
 
 Population* evaluateCocaPopulation(Population *population) {
   for(int i = 0; i < population->psize; i++){
-    population->individuals[i] = evaluateEatIndividual(population->individuals[i]);
+    population->individuals[i] = evaluateCocaIndividual(population->individuals[i]);
   }
   return population;
 }
@@ -109,7 +109,7 @@ Individual evaluateCocaIndividual(Individual individual) {
 
 Population* evaluateDonaldPopulation(Population *population) {
   for(int i = 0; i < population->psize; i++){
-    population->individuals[i] = evaluateEatIndividual(population->individuals[i]);
+    population->individuals[i] = evaluateDonaldIndividual(population->individuals[i]);
   }
   return population;
 }
